@@ -10,7 +10,7 @@ const {
 } = require('./permutations.js');
 
 const BLOCK_SIZE = 64;
-const BITE_SIZE = 8;
+const CHAR_SIZE = 16;
 const NUMBER_OF_ROUNDS = 16;
 
 /*
@@ -18,7 +18,7 @@ const NUMBER_OF_ROUNDS = 16;
 */
 
 const textToBinary = (text) => {
-  const PADDING = '00000000';
+  const PADDING = '0'.repeat(CHAR_SIZE);
   const binary = [];
   for (let i = 0; i < text.length; i++) {
     const compact = text.charCodeAt(i).toString(2);
@@ -36,7 +36,7 @@ const splitBinary = (binary, size) => {
   }
 
   if (flatBinary.length % size !== 0) {
-    const PADDING = Array(size).fill(0).join('');
+    const PADDING = '0'.repeat(size);
     const blockMaxCount = Math.floor(flatBinary.length / size);
     const compact = flatBinary.slice(blockMaxCount * size, flatBinary.length);
     splitedBinary.push([...compact, ...PADDING.slice(0, PADDING.length - compact.length)]);
@@ -46,7 +46,7 @@ const splitBinary = (binary, size) => {
 }
 
 const binaryToText = (binary) => {
-  const splitedToOctets = splitBinary(binary, BITE_SIZE);
+  const splitedToOctets = splitBinary(binary, CHAR_SIZE);
 
   const text = splitedToOctets.map(octet => {
     return String.fromCharCode(parseInt(Number(octet.join('')), 2));
@@ -65,7 +65,7 @@ const splitBlockToLeftAndRight = (block) => {
 }
 
 const sBoxChanger = (extensionBlock, sBox) => {
-  const PADDING = Array(4).fill(0).join('');;
+  const PADDING = '0'.repeat(CHAR_SIZE);
   const changedBlock = [];
   for (let i = 0; i < extensionBlock.length; i++) {
     const splitedBits = splitToMiddleAndExtremeBits(extensionBlock[i]);
