@@ -65,7 +65,7 @@ const splitBlockToLeftAndRight = (block) => {
 }
 
 const sBoxChanger = (extensionBlock, sBox) => {
-  const PADDING = '0'.repeat(CHAR_SIZE);
+  const PADDING = '0'.repeat(8);
   const changedBlock = [];
   for (let i = 0; i < extensionBlock.length; i++) {
     const splitedBits = splitToMiddleAndExtremeBits(extensionBlock[i]);
